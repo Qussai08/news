@@ -1,3 +1,4 @@
+// @dart = 2.9
 import 'dart:convert';
 import 'package:http/http.dart' show Client;
 import '../models/item_model.dart';
@@ -14,7 +15,7 @@ class NewsApiProvider implements Source {
     final response =
         await client.get(Uri.parse('$_root/topstories.json?print=pretty'));
 
-    final ids = json.decode(response.body);
+    final ids = json.decode(response.body).cast<int>();
     return ids;
   }
 

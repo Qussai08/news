@@ -1,3 +1,4 @@
+// @dart = 2.9
 import 'dart:convert';
 
 class ItemModel {
@@ -17,18 +18,18 @@ class ItemModel {
 
   ItemModel.fromJson(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
-        deleted = parsedJson['deleted'],
+        deleted = parsedJson['deleted'] ?? false,
         type = parsedJson['type'],
-        by = parsedJson['by'],
+        by = parsedJson['by'] ?? '',
         time = parsedJson['time'],
-        text = parsedJson['text'],
-        dead = parsedJson['dead'],
+        text = parsedJson['text'] ?? '',
+        dead = parsedJson['dead'] ?? false,
         parent = parsedJson['parent'],
-        kids = parsedJson['kids'],
+        kids = parsedJson['kids'] ?? [],
         url = parsedJson['url'],
         score = parsedJson['score'],
         title = parsedJson['title'],
-        descendants = parsedJson['descendants'];
+        descendants = parsedJson['descendants'] ?? 0;
 
   ItemModel.fromDb(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],

@@ -1,3 +1,4 @@
+// @dart = 2.9
 import 'package:news/src/resources/repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,19 +8,19 @@ import 'dart:async';
 import '../models/item_model.dart';
 
 class NewsDbProvider implements Source, Cache {
-  late Database db;
+  Database db;
 
   NewsDbProvider() {
     init();
   }
   @override
-  Future<List<int>?>? fetchTopIds() {
+  Future<List<int>> fetchTopIds() {
     return null;
   }
 
   init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, "items.db");
+    final path = join(documentsDirectory.path, "items1.db");
     db = await openDatabase(
       path,
       version: 1,
@@ -47,7 +48,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   @override
-  Future<ItemModel?> fetchItem(int id) async {
+  Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
       "Items",
       columns: null,
@@ -63,7 +64,15 @@ class NewsDbProvider implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return db.insert('Items', item.toMap());
+    return db.insert(
+      'Items',
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<int> clear() {
+    return db.delete('Items');
   }
 }
 
